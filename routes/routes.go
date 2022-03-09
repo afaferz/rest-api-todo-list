@@ -1,13 +1,13 @@
 package routes
 
 import (
+	"fmt"
 	"log"
 	"net/http"
 
 	"github.com/afaferz/rest-api/controllers"
 	"github.com/afaferz/rest-api/middleware"
 	"github.com/gorilla/mux"
-	"github.com/rs/cors"
 )
 
 func HandleRequest() {
@@ -20,15 +20,28 @@ func HandleRequest() {
 	r.HandleFunc("/api/tasks/{id}/", controllers.DeleteTask).Methods("DELETE")
 	r.HandleFunc("/api/tasks/{id}/", controllers.EditTask).Methods("PATCH")
 
-	// headersOk := handlers.AllowedHeaders([]string{"X-Requested-With"})
-	// originsOk := handlers.AllowedOrigins([]string{"*"})
-	// methodsOk := handlers.AllowedMethods([]string{"GET", "HEAD", "POST", "PUT", "OPTIONS"})
+	http.Handle("/", &CORSRouterDecorator{r})
+	fmt.Println("Listening")
+	log.Panic(
+		http.ListenAndServe(":8080", nil),
+	)
+}
 
-	c := cors.New(cors.Options{
-		AllowedOrigins:   []string{"*"},
-		AllowCredentials: true,
-	})
+type CORSRouterDecorator struct {
+	R *mux.Router
+}
 
-	handler := c.Handler(r)
-	log.Fatal(http.ListenAndServe(":8080", r), handler)
+func (c *CORSRouterDecorator) ServeHTTP(rw http.ResponseWriter, req *http.Request) {
+	if origin := req.Header.Get("Origin"); origin != "" {
+		rw.Header().Set("Access-Control-Allow-Origin", origin)
+		rw.Header().Set("Access-Control-Allow-Methods",
+			"POST, GET, PUT, DELETE, PATCH")
+		rw.Header().Add("Access-Control-Allow-Headers",
+			"Content-Type, Access-Control-Allow-Headers, Authorization, X-Requested-With")
+	}
+	// Stop here if its Preflighted OPTIONS request
+	if req.Method == "OPTIONS" {
+		return
+	}
+	c.R.ServeHTTP(rw, req)
 }
