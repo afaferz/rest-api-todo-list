@@ -1,4 +1,4 @@
-module github.com/afaferz/rest-api
+module backend/to-do
 
 go 1.17
 

@@ -3,9 +3,9 @@ package main
 import (
 	"fmt"
 
-	"github.com/afaferz/rest-api/db"
-	"github.com/afaferz/rest-api/models"
-	"github.com/afaferz/rest-api/routes"
+	"backend/to-do/db"
+	"backend/to-do/models"
+	"backend/to-do/routes"
 )
 
 func main() {

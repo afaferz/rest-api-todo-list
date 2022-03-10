@@ -5,8 +5,9 @@ import (
 	"log"
 	"net/http"
 
-	"github.com/afaferz/rest-api/controllers"
-	"github.com/afaferz/rest-api/middleware"
+	"backend/to-do/controllers"
+	"backend/to-do/middleware"
+
 	"github.com/gorilla/mux"
 )
 

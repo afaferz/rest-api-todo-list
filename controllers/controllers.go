@@ -5,8 +5,9 @@ import (
 	"fmt"
 	"net/http"
 
-	"github.com/afaferz/rest-api/db"
-	"github.com/afaferz/rest-api/models"
+	"backend/to-do/db"
+	"backend/to-do/models"
+
 	"github.com/gorilla/mux"
 )
 
