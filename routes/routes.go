@@ -23,7 +23,7 @@ func HandleRequest() {
 	http.Handle("/", &CORSRouterDecorator{r})
 	fmt.Println("Listening")
 	log.Panic(
-		http.ListenAndServe(":8080", nil),
+		http.ListenAndServe(":3030", nil),
 	)
 }
 
